@@ -1,0 +1,1 @@
+Nimesoma <a href="#" class="underline"  data-toggle="modal" data-target="#disclaimer_modal">Maelezo Kizuizi</a> na kukubali <a href="#" class="underline"  data-toggle="modal" data-target="#terms_condition"> Masharti na Kanuni </a>

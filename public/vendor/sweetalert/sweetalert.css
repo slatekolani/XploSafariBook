@@ -1,0 +1,19 @@
+
+/*ccs file for customizing sweetalert*/
+
+.swal-button__loader {
+    position: absolute;
+    height: auto;
+    width: 43px;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+}
+
+
+
+

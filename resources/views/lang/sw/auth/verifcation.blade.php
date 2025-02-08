@@ -1,0 +1,1 @@
+Akaunti yako inahitaji kuhakikiwa. Tafadhali logia kwenye barua pepe yako <span style="color: green;">{{ $email }}</span>, fungua ujumbe toka {{ config("app.name") }}  unaitwa Uhakiki Akaunti ya Mwajiri na fata maelekezo kuhakiki akaunti yako.

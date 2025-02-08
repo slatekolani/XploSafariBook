@@ -1,0 +1,1 @@
+Tumekutumia kiungo cha mtandao kwa ajili ya kuhakiki akaunti yako kwenye barua pepe yako <span style="color: green;">{{ $email }}</span>. Logia kwenye barua pepe yako na ufungue kiungo cha mtandao tulichokutumia kukamilisha usajili wako.

@@ -1,0 +1,1 @@
+Click on the user from the list of <code>available users on the left box</code> to include in the selected workflow module level. Once the user has been clicked, he will be added to the list of <code>selected users on the right box</code>. Click on either boxes to toogle the selection.

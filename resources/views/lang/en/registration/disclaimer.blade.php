@@ -1,0 +1,1 @@
+I have read the <a href="#" class="underline"  data-toggle="modal" data-target="#disclaimer_modal">Disclaimer</a> and accept the <a href="#" class="underline"  data-toggle="modal" data-target="#terms_condition">Terms and Conditions</a>

@@ -1,0 +1,17 @@
+Preferable Carbon Date Format : d-M-Y g:i:s A
+
+Proper Correct Spellings.
+organization
+
+SMS API:
+
+<?php
+$username = 'Aladdin';
+$password = 'openSesame';
+
+$header = "Basic " . base64_encode($username . ":" . $password);
+
+base64_encode("wcf_tz" . ":" . "")
+
+?>
+

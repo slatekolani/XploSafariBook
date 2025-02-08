@@ -1,0 +1,1 @@
+Fields marked with <span style="color: red;">*</span> are mandatory

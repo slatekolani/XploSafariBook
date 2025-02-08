@@ -1,0 +1,16 @@
+{
+  "name": "nflip_notification",
+  "version": "1.0.0",
+  "description": "Real time notification system using Socket.io and ExpressJS",
+  "main": "./Server/",
+  "scripts": {
+    "start": "node ./Server/"
+  },
+  "author": "Erick M. Chrysostom",
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "redis": "*",
+    "socket.io": "*"
+  }
+}
