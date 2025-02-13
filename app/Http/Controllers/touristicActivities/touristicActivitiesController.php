@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\touristicActivities;
 
 use App\Http\Controllers\Controller;
+use App\Models\Nations\nations;
 use App\Models\touristicActivities\touristicActivities;
 use App\Models\touristicActivities\touristicActivityConductTips\touristicActivityConductTips;
 use App\Models\TouristicAttractions\touristicAttractions;
+use App\Models\TourOperator\tourOperator;
+use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackages;
 use App\Repositories\touristicActivities\touristicActivitiesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -77,8 +80,18 @@ class touristicActivitiesController extends Controller
     public function showActivity($touristicActivityUuid)
     {
         $touristicActivity=touristicActivities::query()->where('uuid',$touristicActivityUuid)->first();
+        $nation=nations::query()->where('status','=',1)->first();
         $touristicActivityTips=touristicActivityConductTips::query()->where('touristic_activities_id',$touristicActivity->id)->get();
+        $activityTouristicAttractionIds=DB::table('touristic_attraction_activities')->where('touristic_activities_id',$touristicActivity->id)->pluck('touristic_attraction_id');
+        $touristicAttractions=touristicAttractions::whereIn('id',$activityTouristicAttractionIds)->take(3)->inRandomOrder()->get();
+        $localTourPackages=localTourPackages::whereIn('safari_name',$touristicAttractions)->take(3)->inRandomOrder()->get();
+        $activityTourOperatorsIds=DB::table('company_touristic_activities')->where('touristic_activities_id',$touristicActivity->id)->pluck('tour_operator_id');
+        $tourOperators=tourOperator::whereIn('id',$activityTourOperatorsIds)->take(3)->inRandomOrder()->get();
         return view('touristicActivity.publicView.show')
+        ->with('nation',$nation)
+        ->with('tourOperators',$tourOperators)
+        ->with('localTourPackages',$localTourPackages)
+        ->with('touristicAttractions',$touristicAttractions)
         ->with('touristicActivityTips',$touristicActivityTips)
         ->with('touristicActivity',$touristicActivity);
     }

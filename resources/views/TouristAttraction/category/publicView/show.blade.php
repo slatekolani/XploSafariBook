@@ -1,6 +1,6 @@
 @extends('layouts.main', [
-    'title' => __('Activity - ' . $touristicActivity->activity_name),
-    'header' => __('Activity - ' . $touristicActivity->activity_name),
+    'title' => __('Category - ' . $touristicAttractionCategory->attraction_category),
+    'header' => __('Category - ' . $touristicAttractionCategory->attraction_category),
 ])
 
 @include('includes.validate_assets')
@@ -16,10 +16,10 @@
                             <div class="col-12">
                                 <div class="card-header bg-primary text-white py-3">
                                     <h2 class="mb-2 fs-3">
-                                        {{ $touristicActivity->activity_name }}
+                                        {{ $touristicAttractionCategory->attraction_category }}
                                     </h2>
                                     <p class="text-warning fst-italic mb-0 fs-6">
-                                        "{{ $touristicActivity->activity_description }}"
+                                        "{{ $touristicAttractionCategory->attraction_category_description }}"
                                     </p>
                                 </div>
                             </div>
@@ -27,34 +27,17 @@
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <div class="card shadow-sm p-3">
-                                    <img src="{{ asset('public/touristicActivityImage/' . $touristicActivity->activity_image) }}"
-                                        alt="{{ $touristicActivity->activity_name }}"
+                                    <img src="{{ asset('public/TouristicAttractionCategoryIconicImages/' . $touristicAttractionCategory->attraction_category_iconic_image) }}"
+                                        alt="{{ $touristicAttractionCategory->attraction_category }}"
                                         class="card-img-top group-travel-image" loading="lazy">
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="card shadow-sm p-3">
                                     <h4 class="mb-2 text-primary" style="font-size: 20px">
-                                        {{ $touristicActivity->activity_name }} Overview</h4>
-                                    <p class="text-muted">{{ $touristicActivity->activity_description }}</p>
-                                    <span>{{ $touristicActivity->basic_information }}</span>
-                                </div>
-
-                                <div class="card shadow-sm p-3">
-                                    <h4 class="mb-2 text-primary" style="font-size: 20px">
-                                        {{ $touristicActivity->activity_name }} Conducting Tips</h4>
-                                    @forelse ($touristicActivityTips as $touristicActivityTip)
-                                        <ul class="list-unstyled">
-                                            <li class="mb-2">
-                                                <strong class="text-success">&rightarrow;
-                                                    {{ $touristicActivityTip->tip_name }}</strong> <br>
-                                                <span
-                                                    class="text-muted mb-0">{{ $touristicActivityTip->tip_description }}</span>
-                                            </li>
-                                        </ul>
-                                    @empty
-                                        <p class="text-danger">No tips were added!</p>
-                                    @endforelse
+                                        {{ $touristicAttractionCategory->attraction_category }} Overview</h4>
+                                    <p class="text-muted">{{ $touristicAttractionCategory->attraction_category_description }}</p>
+                                    <span>{{ $touristicAttractionCategory->attraction_category_basic_information }}</span>
                                 </div>
                             </div>
                         </div>

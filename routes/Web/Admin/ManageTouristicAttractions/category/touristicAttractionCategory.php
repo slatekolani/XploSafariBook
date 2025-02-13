@@ -16,8 +16,4 @@ Route::group([
         Route::get('/index', 'touristicAttractionCategoryController@index')->name('index');
         Route::put('/update/{attractionCategoryUuid}', 'touristicAttractionCategoryController@update')->name('update');
     });
-
-
-
-
 });

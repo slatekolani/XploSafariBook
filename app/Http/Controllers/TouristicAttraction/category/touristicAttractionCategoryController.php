@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\TouristicAttraction\category;
 
 use App\Http\Controllers\Controller;
+use App\Models\Nations\nations;
 use App\Models\touristicActivities\touristicActivities;
 use App\Models\TouristicAttractions\category\touristicAttractionCategory;
+use App\Models\TouristicAttractions\touristicAttractions;
+use App\Models\TourOperator\tourOperator;
+use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackages;
 use App\Repositories\Admin\TouristicAttraction\category\touristicAttractionCategoryRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -69,6 +74,22 @@ class touristicAttractionCategoryController extends Controller
     {
         $touristicAttractionCategory=touristicAttractionCategory::query()->where('uuid',$attractionCategoryUuid)->first();
         return view('TouristAttraction.category.view')
+            ->with('touristicAttractionCategory',$touristicAttractionCategory);
+    }
+    public function publicView($attractionCategoryUuid)
+    {
+        $touristicAttractionCategory=touristicAttractionCategory::query()->where('uuid',$attractionCategoryUuid)->first();
+        $touristicAttractions=touristicAttractions::query()->where('attraction_category',$touristicAttractionCategory->id)->take(3)->inRandomOrder()->get();
+        $nation=nations::query()->where('status','=',1)->first();
+        $touristicAttractionsIds=touristicAttractions::query()->where('attraction_category',$touristicAttractionCategory->id)->pluck('id');
+        $localTourPackages=localTourPackages::whereIn('safari_name',$touristicAttractionsIds)->get();
+        $attractionCategoryTourOperatorIds=DB::table('operator_touristic_attraction')->whereIn('touristic_attraction_id',$touristicAttractionsIds)->pluck('tour_operator_id');
+        $tourOperators=tourOperator::whereIn('id',$attractionCategoryTourOperatorIds)->get();
+        return view('TouristAttraction.category.publicView.show')
+            ->with('nation',$nation)
+            ->with('localTourPackages',$localTourPackages)
+            ->with('tourOperators',$tourOperators)
+            ->with('touristicAttractions',$touristicAttractions)
             ->with('touristicAttractionCategory',$touristicAttractionCategory);
     }
 
