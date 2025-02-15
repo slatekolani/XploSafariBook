@@ -409,7 +409,7 @@
                                 <!-- "See all" button container -->
                                 <div class="row">
                                     <div class="col-12" style="display: flex; justify-content: flex-end; margin-top: 20px; margin-bottom: 20px;">
-                                        <a href="{{ route('localTouristReview.allLocalTouristReviews', $localTouristReview->tourOperator->uuid) }}"
+                                        <a href="{{route('localTouristReview.allLocalTouristReviews', $tourOperator->uuid)}}"
                                             class="btn btn-primary btn-sm">See all &blacktriangleright;</a>
                                     </div>
                                 </div>
