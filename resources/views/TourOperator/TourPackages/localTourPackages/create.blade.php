@@ -412,6 +412,61 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Trip hierachy (optional)</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Day</th>
+                                                        <th>Date</th>
+                                                        <th>Destination</th>
+                                                        <th>Reservation</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tripHierachy">
+                                                    <tr>
+                                                        <td>
+                                                            <input type="number" name="day[]" class="form-control" placeholder="Enter Day number">
+                                                        </td>
+                                                        <td>
+                                                            <input type="date" name="travel_date[]" class="form-control">
+                                                        </td>
+                                                        <td>
+                                                            <select name="destination[]" class="form-control select2 package-type-select">
+                                                                <option value="">Travel Destination?</option>
+                                                                @forelse($touristicAttractions as $touristicAttraction)
+                                                                    <option value="{{ $touristicAttraction }}">{{ $touristicAttraction }}</option>
+                                                                   @empty 
+                                                                @endforelse
+                                                            </select>
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            <select name="reservation[]" class="form-control select2 package-type-select">
+                                                                <option value="">Reservation</option>
+                                                                @forelse($reservations as $reservation)
+                                                                    <option value="{{ $reservation }}">{{ $reservation }}</option>
+                                                                   @empty 
+                                                                @endforelse
+                                                            </select>
+                                                        </td>         
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary btn-sm addTripHierachy">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                             <div class="row">
@@ -556,4 +611,71 @@
             })
         })
     </script>
+@endpush
+
+
+@push('after-scripts')
+<script>
+    $(document).ready(function() {
+    // Function to initialize select2 for newly added elements
+    function initializeSelect2(element) {
+        $(element).select2({
+            width: '100%',
+            dropdownParent: $(element).closest('tr')
+        });
+    }
+
+    // Initialize select2 for existing selects inside #tripHierachy
+    $('#tripHierachy .select2').each(function() {
+        initializeSelect2(this);
+    });
+
+    // Handle adding new row
+    $(document).on('click', '.addTripHierachy', function() {
+        let newRow = `
+            <tr>
+                <td>
+                    <input type="number" name="day[]" class="form-control" placeholder="Enter Day number">
+                </td>
+                <td>
+                    <input type="date" name="travel_date[]" class="form-control">
+                </td>
+                <td>
+                    <select name="destination[]" class="form-control select2 package-type-select">
+                        <option value="">Travel Destination?</option>
+                        @foreach($touristicAttractions as $touristicAttraction)
+                            <option value="{{ $touristicAttraction }}">{{ $touristicAttraction }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <select name="reservation[]" class="form-control select2 package-type-select">
+                        <option value="">Reservation</option>
+                        @foreach($reservations as $reservation)
+                            <option value="{{ $reservation }}">{{ $reservation }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm removeTripHierachy">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+
+        $('#tripHierachy').append(newRow);
+
+        // Initialize select2 ONLY for new selects inside #tripHierachy
+        $('#tripHierachy tr:last-child .select2').each(function() {
+            initializeSelect2(this);
+        });
+    });
+
+    // Handle removing a row
+    $(document).on('click', '.removeTripHierachy', function() {
+        $(this).closest('tr').remove();
+    });
+});
+    </script>    
 @endpush

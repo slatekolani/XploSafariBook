@@ -84,6 +84,7 @@ class localTourPackagesRepository extends BaseRepository
         $localTourPackage->saveLocalTourPackagePriceExclusives($input,$localTourPackage);
         $localTourPackage->saveLocalTourPackageCollectionStops($input,$localTourPackage);
         $localTourPackage->saveLocalTourPackageRequirements($input,$localTourPackage);
+        $localTourPackage->saveLocalTourPackageTripHierachies($input,$localTourPackage);
     }
 
     public function updateLocalTourPackage($input,$request,$localTourPackageUuid)
@@ -149,5 +150,6 @@ class localTourPackagesRepository extends BaseRepository
         $localTourPackage->updateLocalTourPackagePriceExclusives($input,$localTourPackage);
         $localTourPackage->updateLocalTourPackageCollectionStops($input,$localTourPackage);
         $localTourPackage->updateLocalTourPackageRequirements($input,$localTourPackage);
+        $localTourPackage->updateLocalTourPackageTripHierarchies($input,$localTourPackage);
     }
 }

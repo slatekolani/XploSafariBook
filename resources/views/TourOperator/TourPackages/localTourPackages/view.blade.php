@@ -207,6 +207,44 @@
                                 <td>{{$localTourPackage->emergency_handling}}</td>
                             </tr>
                             <tr>
+                                <table>
+                                    <p>Trip Hierarchy</p>
+                                    <thead>
+                                        <th>Day Number</th>
+                                        <th>Travel Date</th>
+                                        <th>Destination</th>
+                                        <th>Reservation</th>
+                                    </thead>
+                                <tbody>
+                                    @forelse ($localTourPackageTripHierachies as $hierarchy)
+                                    <tr>
+                                        <td>
+                                            {{ $hierarchy->day }}
+                                        </td>
+                                        <td>
+                                            {{ $hierarchy->travel_date }}
+                                        </td>
+                                        <td>
+                                                
+                                            {{$hierarchy->destination}}
+                                        </td>
+                                        <td>
+                                            {{$hierarchy->reservation}}
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td>
+                                            No trip hierachies were added!
+                                        </td>
+                                        
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                            </tr>
+                        
+                            <tr>
                                 <th>Status</th>
                                 @if($localTourPackage->status==1)
                                     <td><span class="badge badge-success badge-pill">Approved</span></td>

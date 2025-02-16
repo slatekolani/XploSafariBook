@@ -32,8 +32,8 @@ class tourCompanyLocalToursGoalsPackageSegmentationRepository extends BaseReposi
                     !empty($packageTypeId) &&
                     isset($input['total_tours'][$key]) &&
                     isset($input['total_travellers'][$key])
-                ) {
-
+                ) 
+                {
                     $packageSegmentation = new localTourGoalsPackageSegmentation();
                     $packageSegmentation->package_type = $packageTypeId;
                     $packageSegmentation->total_tours = $input['total_tours'][$key];

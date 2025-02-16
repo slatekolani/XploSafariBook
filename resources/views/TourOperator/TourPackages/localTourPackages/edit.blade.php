@@ -438,7 +438,7 @@
                                         <div class="col-xs-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                             <div class="form-group">
                                                 {{ Form::label('reservation_used', __('Reservations included in this tour (optional)')) }}
-                                                {{ Form::select('reservation_used[]', $reservation, $reservationIds, ['class' => 'form-control select2', 'multiple', 'autocomplete' => 'off', 'id' => 'reservation_used']) }}
+                                                {{ Form::select('reservation_used[]', $reservations, $reservationIds, ['class' => 'form-control select2', 'multiple', 'autocomplete' => 'off', 'id' => 'reservation_used']) }}
                                                 {!! $errors->first('reservation_used', '<span class="badge badge-danger">:message</span>') !!}
                                             </div>
                                         </div>
@@ -517,6 +517,105 @@
                                                 {!! $errors->first('emergency_handling', '<span class="badge badge-danger">:message</span>') !!}
                                             </div>
                                         </div>
+
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Trip Hierarchy (Optional)</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Day</th>
+                                                            <th>Date</th>
+                                                            <th>Destination</th>
+                                                            <th>Reservation</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tripHierachy">
+                                                        @forelse ($localTourPackageTripHierachies as $hierarchy)
+                                                        <tr>
+                                                            <td>
+                                                                <input type="hidden" name="hierarchy_id[]" value="{{ $hierarchy->id }}">
+                                                                <input type="number" name="day[]" class="form-control" value="{{ $hierarchy->day }}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" name="travel_date[]" class="form-control" value="{{ $hierarchy->travel_date }}">
+                                                            </td>
+                                                            <td>
+                                                                <select name="destination[]" class="form-control select2 package-type-select">
+                                                                    <option value="">Travel Destination?</option>
+                                                                    @foreach ($touristicAttractions as $touristicAttraction)
+                                                                        <option value="{{ $touristicAttraction }}" 
+                                                                            {{ $hierarchy->destination == $touristicAttraction ? 'selected' : '' }}>
+                                                                            {{ $touristicAttraction }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select name="reservation[]" class="form-control select2 package-type-select">
+                                                                    <option value="">Reservation</option>
+                                                                    @foreach ($reservations as $reservation)
+                                                                        <option value="{{ $reservation }}" 
+                                                                            {{ $hierarchy->reservation == $reservation ? 'selected' : '' }}>
+                                                                            {{ $reservation }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                @if ($loop->first)
+                                                                <button type="button" class="btn btn-primary btn-sm addTripHierachy">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                                @else
+                                                                <button type="button" class="btn btn-danger btn-sm removeTripHierachy">
+                                                                    <i class="fas fa-minus"></i>
+                                                                </button>
+                                                                <a href="{{route('localTourPackages.deleteTripHierachy',$hierarchy->uuid)}}" class="btn btn-danger btn-sm">
+                                                                    <i class="fas fa-trash"></i> Delete
+                                                                </a>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td>
+                                                                <input type="number" name="day[]" class="form-control" placeholder="Enter Day number">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" name="travel_date[]" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <select name="destination[]" class="form-control select2 package-type-select">
+                                                                    <option value="">Travel Destination?</option>
+                                                                    @foreach ($touristicAttractions as $touristicAttraction)
+                                                                        <option value="{{ $touristicAttraction }}">{{ $touristicAttraction }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select name="reservation[]" class="form-control select2 package-type-select">
+                                                                    <option value="">Reservation</option>
+                                                                    @foreach ($reservations as $reservation)
+                                                                        <option value="{{ $reservation }}">{{ $reservation }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary btn-sm addTripHierachy">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -663,3 +762,60 @@
         })
     </script>
 @endpush
+
+
+@push('after-scripts')
+    <script>
+        $(document).ready(function () {
+            function initializeSelect2(element) {
+                $(element).select2({
+                    width: '100%',
+                    dropdownParent: $(element).closest('tr')
+                });
+            }
+
+            // Initialize only select2 elements within Trip Hierarchy
+            $('#tripHierachy .select2').each(function () {
+                initializeSelect2(this);
+            });
+
+            $(document).on('click', '.addTripHierachy', function () {
+                let newRow = `
+                    <tr>
+                        <td><input type="number" name="day[]" class="form-control" placeholder="Enter Day number"></td>
+                        <td><input type="date" name="travel_date[]" class="form-control"></td>
+                        <td>
+                            <select name="destination[]" class="form-control select2 package-type-select">
+                                <option value="">Travel Destination?</option>
+                                @foreach ($touristicAttractions as $touristicAttraction)
+                                    <option value="{{ $touristicAttraction }}">{{ $touristicAttraction }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="reservation[]" class="form-control select2 package-type-select">
+                                <option value="">Reservation</option>
+                                @foreach ($reservations as $reservation)
+                                    <option value="{{ $reservation }}">{{ $reservation }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm removeTripHierachy">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                $('#tripHierachy').append(newRow);
+                initializeSelect2($('#tripHierachy tr:last-child .select2'));
+            });
+
+            $(document).on('click', '.removeTripHierachy', function () {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
+@endpush
+

@@ -39,6 +39,7 @@ Route::group([
         Route::get('/viewDeleted/{localTourPackageUuid}', 'localTourPackagesController@viewDeleted')->name('viewDeleted');
         Route::get('/replicateExpiredTour/{localTourPackageUuid}', 'localTourPackagesController@replicateExpiredTour')->name('replicateExpiredTour');
         Route::get('/replicateTourPackage/{localTourPackageUuid}', 'localTourPackagesController@replicateTourPackage')->name('replicateTourPackage');
+        Route::get('/deleteTripHierachy/{tripHierarchyUuid}', 'localTourPackagesController@deleteTripHierachy')->name('deleteTripHierachy');
     });
 
 

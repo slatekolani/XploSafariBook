@@ -228,6 +228,10 @@
                                         role="tab">Tour overview</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-tripHierarchy"
+                                        role="tab">Trip hierarchy</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" id="nav-requestSpace-tab" data-toggle="tab" href="#nav-requestSpace"
                                         role="tab">Book/Request space</a>
                                 </li>
@@ -267,6 +271,7 @@
 
                     <div class="tab-content" id="nav-tabContent">
                         @include('TourOperator.TourPackages.localTourPackages.publicView.overview')
+                        @include('TourOperator.TourPackages.localTourPackages.publicView.tripHierarchy')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.honeyPoints')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.transport')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.tourOperator')

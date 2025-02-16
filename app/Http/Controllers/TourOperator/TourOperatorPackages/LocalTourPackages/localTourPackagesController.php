@@ -21,6 +21,7 @@ use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourpackagePrice
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackagePriceInclusive\localTourPackagePriceInclusives;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackageRequirement\localTourPackageRequirements;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackages;
+use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackageTripHierachy\localTourPackageTripHierachy;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\TotalViews\localTourPackageTotalViews;
 use App\Models\tourPackageType\tourPackageType;
 use App\Models\TourTypes\tourTypes;
@@ -182,7 +183,7 @@ class localTourPackagesController extends Controller
             'cancellation_policy'=>'required|max:200',
             'package_range'=>'required',
             'maximum_travellers'=>'required|numeric',
-            'phone_number'=>'required|regex:/^[0-9]{10}$/',
+            'phone_number'=>'required|numeric|regex:/^[0-9]{10}$/',
             'email_address'=>'required|email',
             'discount_offered'=>'required',
             'number_of_people_for_discount'=>'required|numeric',
@@ -193,6 +194,10 @@ class localTourPackagesController extends Controller
             'local_tour_type'=>'required',
             'emergency_handling'=>'required|string|max:300',
             'transport_used_images.*'=>'required|mimes:jpg,png,jpeg|max:5120|dimensions:max_height:2000,max_width:2000',
+            'day.*'=>'nullable|numeric',
+            'travel_date.*'=>'nullable|string',
+            'destination.*'=>'nullable|string',
+            'reservation.*'=>'nullable|string',
         ]);
         if ($validator->fails())
         {
@@ -220,7 +225,9 @@ class localTourPackagesController extends Controller
         $localTourPackagePriceInclusives=localTourPackagePriceInclusives::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         $localTourPackagePriceExclusives=localTourPackagePriceExclusive::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         $localTourPackageCollectionStops=localTourPackageCollectionStops::query()->where('local_tour_package_id',$localTourPackage->id)->get();
+        $localTourPackageTripHierachies=localTourPackageTripHierachy::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         return view('TourOperator.TourPackages.localTourPackages.view')
+            ->with('localTourPackageTripHierachies',$localTourPackageTripHierachies)
             ->with('localTourPackageActivities',$localTourPackageActivities)
             ->with('localTourPackagePriceInclusives',$localTourPackagePriceInclusives)
             ->with('localTourPackageCollectionStops',$localTourPackageCollectionStops)
@@ -275,12 +282,14 @@ class localTourPackagesController extends Controller
         $localTourPackageSupportedSpecialNeeds=specialNeed::query()->whereIn('id',$localTourPackageSupportedSpecialNeedIds)->pluck('special_need_name');
         $attractionId=$localTourPackage->safari_name;
         $attractionHoneyPoints=touristicAttractionHoneyPoints::query()->where('id',$attractionId)->get();
+        $localTourPackageTripHierachies=localTourPackageTripHierachy::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         // Consider this...
         localTourPackageTotalViews::create([
             'ip_address' => request()->ip(),
             'local_tour_package_id' => $localTourPackage->id,
         ]);
         return view('TourOperator.TourPackages.localTourPackages.publicView.view')
+            ->with('localTourPackageTripHierachies',$localTourPackageTripHierachies)
             ->with('localTourPackageSupportedSpecialNeeds',$localTourPackageSupportedSpecialNeeds)
             ->with('safariAreaPreferenceReservations',$safariAreaPreferenceReservations)
             ->with('localTourPackageCustomerSatisfactions',$localTourPackageCustomerSatisfactions)
@@ -366,14 +375,16 @@ class localTourPackagesController extends Controller
         $tourTypeOffered=tourTypes::query()->where('status','=',1)->pluck('tour_type_name','id');
         $customerSatisfactionCategory=customerSatisfactionCategory::query()->pluck('customer_satisfaction_name','id');
         $customerSatisfactionCategoryIds=DB::table('package_customer_satisfaction')->where('local_tour_package_id',$localTourPackage->id)->pluck('customer_satisfaction_id');
-        $reservation=tourOperatorReservation::query()->where('tour_operator_id',$localTourPackage->tourOperator->id)->pluck('reservation_name','id');
+        $reservations=tourOperatorReservation::query()->where('tour_operator_id',$localTourPackage->tourOperator->id)->pluck('reservation_name','id');
         $reservationIds=DB::table('local_package_reservation')->where('local_tour_package_id',$localTourPackage->id)->pluck('tour_operator_reservation_id');
         $safariCollectionStations=localTourPackageCollectionStops::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         $localTourPackageIncludedActivities=localTourPackageActivities::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         $localTourPackagePriceInclusives=localTourPackagePriceInclusives::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         $localTourPackagePriceExclusives=localTourPackagePriceExclusive::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         $localTourPackageRequirements=localTourPackageRequirements::query()->where('local_tour_package_id',$localTourPackage->id)->get();
+        $localTourPackageTripHierachies=localTourPackageTripHierachy::query()->where('local_tour_package_id',$localTourPackage->id)->get();
         return view('TourOperator.TourPackages.localTourPackages.edit')
+            ->with('localTourPackageTripHierachies',$localTourPackageTripHierachies)
             ->with('localTourPackageRequirements',$localTourPackageRequirements)
             ->with('localTourPackagePriceExclusives',$localTourPackagePriceExclusives)
             ->with('localTourPackagePriceInclusives',$localTourPackagePriceInclusives)
@@ -382,7 +393,7 @@ class localTourPackagesController extends Controller
             ->with('touristicAttractions',$touristicAttractions)
             ->with('specialNeeds',$specialNeeds)
             ->with('specialNeedIds',$specialNeedIds)
-            ->with('reservation',$reservation)
+            ->with('reservations',$reservations)
             ->with('reservationIds',$reservationIds)
             ->with('transports',$transports)
             ->with('transportIds',$transportIds)
@@ -424,7 +435,7 @@ class localTourPackagesController extends Controller
             'cancellation_policy'=>'required|max:200',
             'package_range'=>'required',
             'maximum_travellers'=>'required|numeric',
-            'phone_number'=>'required|regex:/^[0-9]{10}$/',
+            'phone_number'=>'required|numeric|regex:/^[0-9]{10}$/',
             'email_address'=>'required|email',
             'discount_offered'=>'required',
             'number_of_people_for_discount'=>'required|numeric',
@@ -435,6 +446,10 @@ class localTourPackagesController extends Controller
             'local_tour_type'=>'required',
             'emergency_handling'=>'required|string|max:300',
             'transport_used_images.*'=>'nullable|sometimes|mimes:jpg,png,jpeg|max:5120|dimensions:max_height:2000,max_width:2000',
+            'day.*'=>'nullable|numeric',
+            'travel_date.*'=>'nullable|string',
+            'destination.*'=>'nullable|string',
+            'reservation.*'=>'nullable|string',
         ]);
         if ($validator->fails())
         {
@@ -692,6 +707,13 @@ class localTourPackagesController extends Controller
         $localSafariTripRequirement=localTourPackageRequirements::query()->where('uuid',$tripRequirementUuid)->first();
         $localSafariTripRequirement->delete();
         return back()->withFlashSuccess('Trip requirement was deleted successfully');
+    }
+
+    public function deleteTripHierachy($tripHierarchyUuid)
+    {
+        $localTourPackageTripHierachy=localTourPackageTripHierachy::query()->where('uuid',$tripHierarchyUuid)->first();
+        $localTourPackageTripHierachy->delete();
+        return redirect()->back()->withFlashSuccess('Trip hierarchy was deleted successfully');
     }
     public function replicateExpiredTour($localTourPackageUuid)
     {

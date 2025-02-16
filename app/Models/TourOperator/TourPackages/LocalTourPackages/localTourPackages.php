@@ -17,6 +17,7 @@ use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackageColle
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourpackagePriceExclusive\localTourPackagePriceExclusive;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackagePriceInclusive\localTourPackagePriceInclusives;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackageRequirement\localTourPackageRequirements;
+use app\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackageTripHierachy\localTourPackageTripHierachy;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\TotalViews\localTourPackageTotalViews;
 use App\Models\tourPackageType\tourPackageType;
 use App\Models\TourTypes\tourTypes;
@@ -26,6 +27,7 @@ use App\Repositories\TourOperatorPackages\LocalTourPackages\LocalTourPackagePric
 use App\Repositories\TourOperatorPackages\LocalTourPackages\LocalTourPackagePriceInclusive\localTourPackagePriceInclusivesRepository;
 use App\Repositories\TourOperatorPackages\LocalTourPackages\localTourPackageRequirement\localTourPackageRequirementsRepository;
 use App\Repositories\TourOperatorPackages\LocalTourPackages\LocalTourPackagesActivities\localTourPackageActivitiesRepository;
+use App\Repositories\TourOperatorPackages\LocalTourPackages\localTourPackageTripHierachy\localTourPackageTripHierachyRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -40,6 +42,11 @@ class localTourPackages extends BaseModel
     public function tourType()
     {
         return $this->belongsTo(tourTypes::class,'local_tour_type');
+    }
+
+    public function localTourPackageTripHierachy()
+    {
+        return $this->hasMany(localTourPackageTripHierachy::class);
     }
     public function tourOperator()
     {
@@ -277,11 +284,24 @@ class localTourPackages extends BaseModel
         return back()->with('localTourPackageRequirements',$localTourPackageRequirements);
     }
 
+    public function saveLocalTourPackageTripHierachies($input,$localTourPackage)
+    {
+        $localTourPackageTripHierachyRepo=new localTourPackageTripHierachyRepository();
+        $localTourPackageTripHierachy=$localTourPackageTripHierachyRepo->storeLocalTourPackageTripHierachies($input,$localTourPackage);
+        return back()->with('localTourPackageTripHierachy',$localTourPackageTripHierachy);
+    }
+
     public function updateLocalTourPackageRequirements($input,$localTourPackage)
     {
         $localTourPackageRequirementsRepo=new localTourPackageRequirementsRepository();
         $localTourPackageRequirements=$localTourPackageRequirementsRepo->updateLocalTourPackageRequirements($input,$localTourPackage);
         return back()->with('localTourPackageRequirements',$localTourPackageRequirements);
+    }
+    public function updateLocalTourPackageTripHierarchies($input,$localTourPackage)
+    {
+        $localTourPackageTripHierachyRepo=new localTourPackageTripHierachyRepository();
+        $localTourPackageTripHierachy=$localTourPackageTripHierachyRepo->updateLocalTourPackageTripHierarchies($input,$localTourPackage);
+        return back()->with('localTourPackageTripHierachy',$localTourPackageTripHierachy);
     }
     public function getLocalTourPackageStatusLabelAttribute()
     {
