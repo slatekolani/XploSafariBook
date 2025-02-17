@@ -7,6 +7,7 @@ use App\Models\customerSatisfactionCategory\customerSatisfactionCategory;
 use App\Models\Nations\nations;
 use App\Models\specialNeed\specialNeed;
 use App\Models\tanzaniaAndWorldEvents\tanzaniaAndWorldEvents;
+use App\Models\touristicActivities\touristicActivities;
 use App\Models\TouristicAttractions\category\touristicAttractionCategory;
 use App\Models\TouristicAttractions\touristicAttractionHoneyPoint\touristicAttractionHoneyPoints;
 use App\Models\TouristicAttractions\touristicAttractions;
@@ -283,12 +284,15 @@ class localTourPackagesController extends Controller
         $attractionId=$localTourPackage->safari_name;
         $attractionHoneyPoints=touristicAttractionHoneyPoints::query()->where('id',$attractionId)->get();
         $localTourPackageTripHierachies=localTourPackageTripHierachy::query()->where('local_tour_package_id',$localTourPackage->id)->get();
+        $recommendedActivitiesIds=DB::table('touristic_attraction_activities')->where('touristic_attraction_id',$localTourPackage->touristicAttraction->id)->pluck('touristic_attraction_id');
+        $recommendedActivities=touristicActivities::whereIn('id',$recommendedActivitiesIds)->take(3)->inRandomOrder()->get();
         // Consider this...
         localTourPackageTotalViews::create([
             'ip_address' => request()->ip(),
             'local_tour_package_id' => $localTourPackage->id,
         ]);
         return view('TourOperator.TourPackages.localTourPackages.publicView.view')
+            ->with('recommendedActivities',$recommendedActivities)
             ->with('localTourPackageTripHierachies',$localTourPackageTripHierachies)
             ->with('localTourPackageSupportedSpecialNeeds',$localTourPackageSupportedSpecialNeeds)
             ->with('safariAreaPreferenceReservations',$safariAreaPreferenceReservations)

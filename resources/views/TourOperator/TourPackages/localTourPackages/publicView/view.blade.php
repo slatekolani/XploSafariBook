@@ -179,39 +179,83 @@
 @section('content')
     <div class="card" style="margin-top: 30px">
         <div class="card-body">
-            <div class="col-md-12 my-4 position-relative">
-                <div class="row align-items-center">
+            <div class="col-md-12 my-4">
+                <div class="row align-items-center g-4">
+                    <!-- Image Column -->
                     <div class="col-md-6 position-relative">
-                        <img src="{{ asset('public/localSafariBlogImages/' . $localTourPackage->safari_poster) }}"
-                            alt="Safari Poster"
-                            style="height: 100%; width: 100%; object-fit: cover; object-position: center; border-radius: 12px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease;"
-                            loading="lazy">
-                        <a href="#" title="Add to Favorites" class="heart-icon">
-                            <i class="fas fa-heart"></i>
-                        </a>
+                        <div class="image-container" style="height: 400px; width: 100%; overflow: hidden; border-radius: 12px; position: relative;">
+                            <img 
+                                src="{{ asset('public/localSafariBlogImages/' . $localTourPackage->safari_poster) }}"
+                                alt="Safari Poster"
+                                style="
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    object-position: center;
+                                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                                    transition: transform 0.3s ease;
+                                "
+                                loading="lazy"
+                            >
+                        </div>
                     </div>
+            
+                    <!-- Content Column -->
                     <div class="col-md-6">
-                        <h3 class="mb-3" style="font-weight: 700; font-size: 28px; color: #2b3e50;">Safari to
-                            {{ $localTourPackage->touristicAttraction->attraction_name }}</h3>
-                        <p class="card-text" style="font-size: 15px; line-height: 1.6;color:dodgerblue">
-                            {{ $localTourPackage->touristicAttraction->attraction_description }}
-                        </p>
-                        <p class="card-text text-muted" style="font-size: 15px; line-height: 1.6;">
-                            {{ $localTourPackage->touristicAttraction->basic_information }}
-                        </p>
-                        <p class="badge badge-success py-2 px-3" style="font-size: 15px;">
-                            {{ $localTourPackage->tourPackageType->tour_package_type_name }} special for
-                            {{ $localTourPackage->tanzaniaAndWorldEvent->event_name }}
-                        </p>
-                        <div class="text-center mt-4">
-                            <a href="{{ route('touristicAttraction.show', $localTourPackage->touristicAttraction->uuid) }}">
-                                Learn more about {{ $localTourPackage->touristicAttraction->attraction_name }}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                            
+                        <div class="content-wrapper" style="max-width: 600px;">
+                            <h3 class="mb-3" style="
+                                font-weight: 700;
+                                font-size: clamp(24px, 2.5vw, 28px);
+                                color: #2b3e50;
+                                line-height: 1.3;
+                            ">
+                                Safari to {{ $localTourPackage->touristicAttraction->attraction_name }}
+                            </h3>
+            
+                            <p class="card-text mb-3" style="
+                                font-size: 15px;
+                                line-height: 1.6;
+                                color: #1e90ff;
+                            ">
+                                {{ $localTourPackage->touristicAttraction->attraction_description }}
+                            </p>
+            
+                            <p class="card-text text-muted mb-4" style="
+                                font-size: 15px;
+                                line-height: 1.6;
+                            ">
+                                {{ $localTourPackage->touristicAttraction->basic_information }}
+                            </p>
+            
+                            <div class="badge bg-success mb-4" style="
+                                font-size: 14px;
+                                padding: 8px 16px;
+                                border-radius: 6px;
+                                display: inline-block;
+                            ">
+                                {{ $localTourPackage->tourPackageType->tour_package_type_name }} special for
+                                {{ $localTourPackage->tanzaniaAndWorldEvent->event_name }}
+                            </div>
+            
+                            <div class="mt-4">
+                                <a href="{{ route('touristicAttraction.show', $localTourPackage->touristicAttraction->uuid) }}"
+                                    class="learn-more-link" style="
+                                    color: #2b3e50;
+                                    text-decoration: none;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    font-weight: 500;
+                                    transition: color 0.3s ease;
+                                ">
+                                    Learn more about {{ $localTourPackage->touristicAttraction->attraction_name }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -235,6 +279,11 @@
                                     <a class="nav-link" id="nav-requestSpace-tab" data-toggle="tab" href="#nav-requestSpace"
                                         role="tab">Book/Request space</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="nav-recommendedActivities-tab" data-toggle="tab" href="#nav-recommendedActivities"
+                                        role="tab">Recommended activities</a>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link" id="nav-honeyPoints-tab" data-toggle="tab" href="#nav-honeyPoints"
                                         role="tab">Honey points</a>
@@ -273,6 +322,7 @@
                         @include('TourOperator.TourPackages.localTourPackages.publicView.overview')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.tripHierarchy')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.honeyPoints')
+                        @include('TourOperator.TourPackages.localTourPackages.publicView.recommendedActivities')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.transport')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.tourOperator')
                         @include('TourOperator.TourPackages.localTourPackages.publicView.similarSafaris')
