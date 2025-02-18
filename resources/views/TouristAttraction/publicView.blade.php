@@ -156,6 +156,9 @@
                     <a class="nav-link" style="color: white" id="nav-honeyPoints-tab" data-toggle="tab" href="#nav-honeyPoints" role="tab" aria-controls="nav-honeyPoints" aria-selected="false">Honey points</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" style="color: white" id="nav-recommendedActivities-tab" data-toggle="tab" href="#nav-recommendedActivities" role="tab" aria-controls="nav-recommendedActivities" aria-selected="false">Recommended activities</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" style="color: white" id="nav-visitReason-tab" data-toggle="tab" href="#nav-visitReason" role="tab" aria-controls="nav-visitReason" aria-selected="false">Why Visit?</a>
                 </li>
                 <li class="nav-item">
@@ -181,6 +184,7 @@
 
         <div class="tab-content" id="touristAttractionTabContent">
             @include('TouristAttraction.publicView.about')
+            @include('TouristAttraction.publicView.recommendedActivities')
             @include('TouristAttraction.honeyPoints.publicView.honeyPoints')
             @include('TouristAttraction.publicView.visitReason')
             @include('TouristAttraction.publicView.advice')

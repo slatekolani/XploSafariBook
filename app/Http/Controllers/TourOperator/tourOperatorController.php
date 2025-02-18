@@ -155,7 +155,10 @@ class tourOperatorController extends Controller
             ->where('safari_start_date','>=',Carbon::now())
             ->take(3)
             ->get();
+        $tourOperatorTouristicActivitiesIds=DB::table('company_touristic_activities')->where('tour_operator_id',$tourOperator->id)->pluck('touristic_activities_id');
+        $tourOperatorTouristicActivities=touristicActivities::whereIn('id',$tourOperatorTouristicActivitiesIds)->get();
         return view('TourOperator.publicView')
+            ->with('tourOperatorTouristicActivities',$tourOperatorTouristicActivities)
             ->with('nation',$nation)
             ->with('totalLocalTouristReviews',$totalLocalTouristReviews)
             ->with('reservationLocalTourPackages',$reservationLocalTourPackages)

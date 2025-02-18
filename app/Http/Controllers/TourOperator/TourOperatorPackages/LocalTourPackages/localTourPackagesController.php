@@ -284,7 +284,7 @@ class localTourPackagesController extends Controller
         $attractionId=$localTourPackage->safari_name;
         $attractionHoneyPoints=touristicAttractionHoneyPoints::query()->where('id',$attractionId)->get();
         $localTourPackageTripHierachies=localTourPackageTripHierachy::query()->where('local_tour_package_id',$localTourPackage->id)->get();
-        $recommendedActivitiesIds=DB::table('touristic_attraction_activities')->where('touristic_attraction_id',$localTourPackage->touristicAttraction->id)->pluck('touristic_attraction_id');
+        $recommendedActivitiesIds=DB::table('touristic_attraction_activities')->where('touristic_attraction_id',$localTourPackage->touristicAttraction->id)->pluck('touristic_activities_id');
         $recommendedActivities=touristicActivities::whereIn('id',$recommendedActivitiesIds)->take(3)->inRandomOrder()->get();
         // Consider this...
         localTourPackageTotalViews::create([

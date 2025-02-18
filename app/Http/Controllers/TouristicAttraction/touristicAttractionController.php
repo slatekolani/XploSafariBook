@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TouristicAttraction;
 
 use App\Http\Controllers\Controller;
 use App\Models\Nations\nations;
+use App\Models\touristicActivities\touristicActivities;
 use App\Models\TouristicAttractions\attractionVisitReasons;
 use App\Models\TouristicAttractions\FAQ\frequentAskedQuestions;
 use App\Models\TouristicAttractions\touristAttractionFaq;
@@ -73,7 +74,10 @@ class touristicAttractionController extends Controller
         $nation=nations::query()->where('status','=',1)->first();
         $touristicAttractionHoneyPoints=touristicAttractionHoneyPoints::query()->where('touristic_attraction_id',$touristicAttraction->id)->get();
         $touristicAttractionRules=touristicAttractionRules::query()->orderBy('id')->get();
+        $recommendedActivitiesIds=DB::table('touristic_attraction_activities')->where('touristic_attraction_id',$touristicAttraction->id)->pluck('touristic_activities_id');
+        $recommendedActivities=touristicActivities::whereIn('id',$recommendedActivitiesIds)->take(3)->inRandomOrder()->get();
         return view('TouristAttraction.publicView')
+            ->with('recommendedActivities',$recommendedActivities)
             ->with('nation',$nation)
             ->with('year',$year)
             ->with('touristicAttractionRules',$touristicAttractionRules)

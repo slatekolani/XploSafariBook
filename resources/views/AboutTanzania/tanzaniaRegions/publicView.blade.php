@@ -148,6 +148,11 @@
                                 aria-selected="false">Attractions</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" style="color: white" id="nav-recommendedActivities-tab" data-toggle="tab"
+                                href="#nav-recommendedActivities" role="tab" aria-controls="nav-recommendedActivities"
+                                aria-selected="false">Recommended Activities</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" style="color: white" id="nav-tourOperators-tab"
                                 data-toggle="tab" href="#nav-tourOperators" role="tab"
                                 aria-controls="nav-tourOperators" aria-selected="false">Tour Operators</a>
@@ -192,6 +197,7 @@
                         @include('AboutTanzania.tanzaniaRegions.publicView.about')
                         @include('AboutTanzania.tanzaniaRegions.publicView.tourOperators')
                         @include('AboutTanzania.tanzaniaRegions.publicView.attractions')
+                        @include('AboutTanzania.tanzaniaRegions.publicView.recommendedActivities')
                         @include('AboutTanzania.tanzaniaRegions.publicView.safaris')
                         @include('AboutTanzania.tanzaniaRegions.publicView.culture')
                         @include('AboutTanzania.tanzaniaRegions.publicView.economicActivities')

@@ -104,12 +104,12 @@
                                             onclick="openTourCompanyWebsite('{{ $tourOperator->website_url }}')">
                                             Preview website <span class="ml-1">&blacktriangleright;</span>
                                         </a>
-                                    </div>
-                                    <div class="d-flex justify-content-center" style="padding: 10px 10px 10px 10px">
-                                        <div class="text-center">
                                             <a href="{{ route('tourOperator.publicView', $tourOperator->uuid) }}"
-                                                class="btn btn-primary btn-sm">Packages posted &blacktriangleright;</a>
-                                        </div>
+                                                class="btn btn-primary btn-sm">View Profile &blacktriangleright;</a>
+                                    </div>
+                                    <br>
+                                    {{-- <div class="d-flex justify-content-center" style="padding: 10px 10px 10px 10px">
+                                        
                                         @if ($tourOperator->agreeCustomBooking == 'Yes')
                                             <div class="row">
                                                 <div class="text-center">
@@ -127,7 +127,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    </div>
+                                    </div> --}}
                                     <div class="d-flex justify-content-center">
                                         <a href="{{ $tourOperator->instagram_url }}" target="_blank" class="mx-2">
                                             <i class="fab fa-instagram fa-2x" style="color: #E4405F;"></i>

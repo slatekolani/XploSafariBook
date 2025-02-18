@@ -19,7 +19,7 @@
                                 <div style="display: flex">
                                     <img src="{{ asset('public/TourOperatorsLogos/' . $tourOperator->company_logo) }}"
                                         alt="Company Logo"
-                                        style="height: 70px; width: 70px; border-radius:50%;object-fit: cover;"
+                                        style="height: 70px; width: auto;"
                                         loading="lazy">
                                     <h3 style="font-family: 'Lobster', cursive; font-size: 25px;color:dodgerblue">
                                         {{ $tourOperator->company_name }}</h3>
@@ -126,29 +126,26 @@
                                 @else
                                     <span class="badge badge-danger badge-pill pull-right">Unapproved</span>
                                 @endif
+                                <br>
+
                                 @if ($tourOperator->agreeCustomBooking == 'Yes')
-                                    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-                                        <div class="text-center">
-                                            <a href="{{ route('customTourBookings.create', $tourOperator->uuid) }}"
-                                                class="btn btn-primary btn-sm" style="margin-left: 10px">Request custom tour
-                                                &blacktriangleright;</a>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-                                        <div class="text-center">
-                                            <a onclick="alert('Whoops! It appears this tour company does not support custom tours');"
-                                                class="btn btn-primary btn-sm" style="margin-left: 10px">Request custom tour
-                                                &blacktriangleright;</a>
-                                        </div>
-                                    </div>
+                                <a href="{{ route('customTourBookings.create', $tourOperator->uuid) }}"
+                                    class="btn btn-primary w-100">
+                                    Request Custom Tour
+                                </a>
+                                @else                                       
+                                <a onclick="alert('Whoops! It appears this tour company does not support custom tours');"
+                                    class="btn btn-primary btn-sm" style="margin-left: 10px">Request custom tour
+                                    &blacktriangleright;</a>
                                 @endif
+                               <br>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Local Safari's Posted by <span
-                                        style="color: dodgerblue">{{ $tourOperator->company_name }}</span></h3>
+                                <h3>Local Safaris Posted by <span style="color: dodgerblue">{{ $tourOperator->company_name }}</span></h3>
+                                <p>Travel to these destinations in the posted packages and enjoy the beauty of Tanzania.</p>                                
                                 <div class="row">
                                     @forelse($localTourPackages as $localTourPackage)
                                         @if ($localTourPackage->tourOperator->status == 1)
@@ -279,6 +276,9 @@
                     <div class="card-body">
                         <div class="col-md-12">
                             <h3>Reservations Included in Posted Safaris</h3>
+                            <p>Travel to the destinations in the posted packages and enjoy a stay in these reservations.</p>
+                               
+
                             <div class="row">
                                 <?php
                                 $reservationCount = 0;
@@ -350,6 +350,49 @@
                             @endforelse
 
                         </div>
+<br>
+                            <div class="col-md-12">
+                                <h3>Activities a tour operator can assist you with</h3>
+                                <p>Discover the experiences {{$tourOperator->company_name}} can provide.</p>                                
+                    
+                                <div class="group-travels-grid">
+                                    @forelse($tourOperatorTouristicActivities as $tourOperatorTouristicActivity)
+                                        <div class="group-travel-card">
+                                            <div class="card group-travel-card-inner h-100 shadow-hover">
+                                                <a href="{{route('touristicActivity.showActivity',$tourOperatorTouristicActivity->uuid)}}" class="group-travel-card-link">
+                                                    <div class="card-image-wrapper">
+                                                        <img 
+                                                            src="{{ asset('public/touristicActivityImage/' . $tourOperatorTouristicActivity->activity_image) }}"
+                                                            alt="{{ $tourOperatorTouristicActivity->activity_name }}"
+                                                            class="card-img-top group-travel-image"
+                                                            loading="lazy"
+                                                        >
+                                                        <div class="card-image-overlay">
+                                                            <h5 class="group-travel-title">{{ $tourOperatorTouristicActivity->activity_name }}</h5>
+                                                            <span style="color: white">{{strlen($tourOperatorTouristicActivity->activity_description) > 38 ? substr($tourOperatorTouristicActivity->activity_description,0,38) .'...' : $tourOperatorTouristicActivity->activity_description  }}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="no-group-travels-message">
+                                            <p>Whoops! No touristic activity have been added yet. Our team is crafting something special!</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                    
+                                <div class="see-more-section">
+                                    <a href="#" class="btn btn-explore-group">
+                                        Explore Touristic Activities
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        
                         <div class="row pull-right" style="margin-top: 20px;margin-bottom: 20px">
                             <div class="text-center">
                                 <a href="#" class="btn btn-primary btn-sm" style="margin-left: 10px">More?
@@ -359,7 +402,7 @@
                         <div class="row" style="margin-top: 30px">
                             <div class="col-md-12" style="margin-top: 20px">
                                 <h3>Reviews - <span class="badge badge-primary">{{ $totalLocalTouristReviews }}</span></h3>
-                                
+                                <p>See what others say about {{$tourOperator->company_name}} to help you make an informed decision.</p>   
                                 <div class="row">
                                     @forelse($localTouristReviews as $localTouristReview)
                                         <div class="col-md-6" style="margin-bottom: 30px;">
@@ -420,7 +463,143 @@
                 </div>
             </div>
         </div>
+
+        
+
     </div>
 </div>
 </div>
 @endsection
+
+<style>
+    .group-travels-section {
+        background-color: #f0f4f8;
+        padding: 3rem 0;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .section-subtitle {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+    }
+    
+    .group-travels-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .group-travel-card {
+        perspective: 1000px;
+    }
+    
+    .group-travel-card-inner {
+        transition: all 0.3s ease-in-out;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .group-travel-card-inner:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+    }
+    
+    .card-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .group-travel-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .group-travel-card-inner:hover .group-travel-image {
+        transform: scale(1.1);
+    }
+    
+    .card-image-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+        padding: 1rem;
+    }
+    
+    .group-travel-title {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .no-group-travels-message {
+        text-align: center;
+        color: #6c757d;
+        padding: 2rem;
+        background-color: #e9ecef;
+        border-radius: 12px;
+    }
+    
+    .see-more-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    .btn-explore-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #2ecc71;
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        box-shadow: 0 10px 20px rgba(46, 204, 113, 0.2);
+    }
+    
+    .btn-explore-group:hover {
+        background-color: #27ae60;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 25px rgba(46, 204, 113, 0.3);
+    }
+    
+    .btn-explore-group svg {
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-explore-group:hover svg {
+        transform: translateX(5px);
+    }
+    
+    @media (max-width: 768px) {
+        .group-travels-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .group-travels-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    </style>

@@ -12,6 +12,7 @@ use App\Models\tanzaniaRegions\regionCulture\cultureCharacteristics\tanzaniaRegi
 use App\Models\tanzaniaRegions\regionCulture\tanzaniaRegionCulture;
 use App\Models\tanzaniaRegions\tanzaniaRegionFAQ\tanzaniaRegionFAQ;
 use App\Models\tanzaniaRegions\tanzaniaRegions;
+use App\Models\touristicActivities\touristicActivities;
 use App\Models\TouristicAttractions\touristicAttractions;
 use App\Models\touristicGames\touristicGame;
 use App\Models\TourOperator\tourOperator;
@@ -109,7 +110,10 @@ class tanzaniaRegionsController extends Controller
        $tourOperatorsList=tourOperator::whereIn('id',$tourOperatorsListIds)->where('status','=',1)->take(3)->get();
        $nation=nations::query()->where('status','=',1)->first();
        $tanzaniaRegionsFAQ=tanzaniaRegionFAQ::query()->where('tanzania_region_id',$tanzaniaRegion->id)->get();
+       $regionRecommendedActivitiesIds=DB::table('touristic_attraction_activities')->whereIn('touristic_attraction_id',$touristicAttractions->pluck('id'))->pluck('touristic_activities_id');
+       $recommendedActivities=touristicActivities::whereIn('id',$regionRecommendedActivitiesIds)->take(3)->inRandomOrder()->get();
        return view('AboutTanzania.tanzaniaRegions.publicView')
+           ->with('recommendedActivities',$recommendedActivities)
            ->with('tanzaniaRegionsFAQ',$tanzaniaRegionsFAQ)
            ->with('cultureAppreciationActivities',$cultureAppreciationActivities)
            ->with('cultureChallenges',$cultureChallenges)
