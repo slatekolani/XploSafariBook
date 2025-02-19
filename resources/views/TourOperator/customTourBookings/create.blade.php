@@ -128,7 +128,7 @@
 
                                 <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <div class="form-group">
-                                        {{ Form::label('total_adult_residents', __("Number of Residents (Adult)"), ['class' => 'required_asterik']) }}
+                                        {{ Form::label('total_adult_residents', __("Number of Residents (Adults)"), ['class' => 'required_asterik']) }}
                                         {{ Form::number('total_adult_residents', null, ['class' => 'form-control', 'placeholder'=>'If none write 0','autocomplete' => 'off', 'id' => 'total_adult_residents', 'required']) }}
                                         {!! $errors->first('total_adult_residents', '<span class="badge badge-danger">:message</span>') !!}
                                     </div>
