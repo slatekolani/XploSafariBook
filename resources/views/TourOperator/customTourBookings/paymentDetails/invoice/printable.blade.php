@@ -113,10 +113,10 @@
                             </div>
                         </div>
                     </td>
-                    <td style="width: 50%;">
+                    <td style="width: 10%;">
                         <div class="card">
                             <div class="card-body">
-                                <div class="pull-right">
+                                <div class="pull-left">
                                     <h3>INVOICE</h3>
                                     <p style="font-size: 15px">{{$customTourBooking->reference_number}}</p><br>
                                     <h3>Travel Date</h3>

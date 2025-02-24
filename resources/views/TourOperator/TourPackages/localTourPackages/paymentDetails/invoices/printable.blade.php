@@ -99,7 +99,7 @@ $dataUrl = 'data:image/png;base64,' . $imageData;
                 </div>
             </div>
         </td>
-        <td style="width: 50%;">
+        <td style="width: 10%;">
             <div class="card">
                 <div class="card-body">
                     <div class="pull-right">
