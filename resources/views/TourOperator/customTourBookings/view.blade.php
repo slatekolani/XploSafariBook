@@ -132,7 +132,7 @@
                             </tr>
                             <tr>
                                 <th>Tour price</th>
-                                <td>T shs {{number_format($customTourBooking->tour_price)}}</td>
+                                <td>T shs {{number_format($customTourBooking->TotalCustomTourPriceLabel)}}</td>
                             </tr>
                             <tr>
                                 <th>Message</th>

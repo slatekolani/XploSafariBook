@@ -8,17 +8,20 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="invoice-header">
-                    <h1>Invoice</h1>
-                </div>
+                
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="invoice-info">
-                                <img src="{{'/public/TourOperatorsLogos/'.$customTourBooking->tourOperator->company_logo}}" style="width: 300px;height: 70px">
+                                <img src="{{'/public/TourOperatorsLogos/'.$customTourBooking->tourOperator->company_logo}}" style="width: 300px;height: auto">
                                 <h3 style="font-weight: bolder">{{$customTourBooking->tourOperator->company_name}}</h3>
-                                <p style="font-weight: bolder">Bank Information</p>
-                                <p><a href="mailto:{{$customTourBooking->tourOperator->email_address}}">{{$customTourBooking->tourOperator->email_address}}</a></p>
+                                <p>P.O BOX {{$customTourBooking->tourOperator->postal_code}},</p>
+                                <p>{{$tanzaniaRegions[$customTourBooking->tourOperator->region]}},</p>
+                                <p>{{$customTourBooking->tourOperator->physical_location}},</p>
+                                <p>PHONE: {{$customTourBooking->tourOperator->phone_number}},</p>
+                                <p><a href="{{$customTourBooking->tourOperator->website_url}}">{{$customTourBooking->tourOperator->website_url}},</a></p>
+                                <p><a href="mailto:{{$customTourBooking->tourOperator->email_address}}">{{$customTourBooking->tourOperator->email_address}},</a></p>
+                                <p>TIN NUMBER: {{$customTourBooking->tourOperator->tin_number}}.</p>
                             </div>
                         </div>
                         <div class="col-md-6">

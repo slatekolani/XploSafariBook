@@ -3,6 +3,7 @@
 namespace App\Models\Auth\Attribute;
 
 use App\Models\TouristicAttractions\touristicAttractions;
+use App\Models\TourOperator\customTourBookings\customTourBookings;
 use App\Models\TourOperator\tourOperator;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackageBookings\localTourPackageBookings;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackages;
@@ -168,13 +169,18 @@ trait UserAttribute
 
     public function getTotalBookingsMadeByTourist()
     {
-        $totalBookingsMadeByUser=localTourPackageBookings::query()->where('user_id',$this->uuid)->count();
+        $totalBookingsMadeByUser=localTourPackageBookings::query()->where('user_id',$this->id)->count();
         return $totalBookingsMadeByUser;
     }  
+    public function getTotalCustomTourBookingsMadeByTourist()
+    {
+        $totalCustomTourBookingsMadeByUser=customTourBookings::query()->where('user_id',$this->id)->count();
+        return $totalCustomTourBookingsMadeByUser;
+    }
     public function getTotalDestinationsTravelledByTourist()
     {
         $localTourPackageBookings=localTourPackageBookings::query()
-        ->where('user_id',$this->uuid)
+        ->where('user_id',$this->id)
         ->pluck('local_tour_package_id');
 
         $destinationIds=localTourPackages::query()

@@ -236,9 +236,11 @@ class customTourBookingsController extends Controller
         $customTourBooking=customTourBookings::query()->where('uuid',$customTourBookingUuid)->first();
         $attractionReservations=customTourBookingReservations::query()->where('custom_tour_booking_id',$customTourBooking->id)->get();
         $customTourBookingTourPrices=customTourBookingTourPrices::query()->where('custom_tour_booking_id',$customTourBooking->id)->get();
+        $tanzaniaRegions=tanzaniaRegions::query()->where('status','=',1)->pluck('region_name', 'id');
         return view('TourOperator.customTourBookings.paymentDetails.invoice.preview')
             ->with('customTourBookingTourPrices',$customTourBookingTourPrices)
             ->with('customTourBooking',$customTourBooking)
+            ->with('tanzaniaRegions',$tanzaniaRegions)
             ->with('attractionReservations',$attractionReservations);
     }
 
@@ -257,18 +259,21 @@ class customTourBookingsController extends Controller
             'tempDir' => sys_get_temp_dir(), // Set temporary directory
             'default_font' => 'lato', // Set default font
         ]);
-
+        $tanzaniaRegions = cache()->remember('tanzania_regions', 60*24, function() {
+            return tanzaniaRegions::where('status', 1)->pluck('region_name', 'id');
+        });
         // Render the view
         $html = view('TourOperator.customTourBookings.paymentDetails.invoice.printable', [
             'customTourBooking' => $customTourBooking,
             'attractionReservations' => $attractionReservations,
+            'tanzaniaRegions' => $tanzaniaRegions,
             'customTourBookingTourPrices' => $customTourBookingTourPrices
         ])->render();
 
         $mpdf->WriteHTML($html);
 
         // Output the PDF
-        $mpdf->Output('Local_tour_invoice.pdf', 'I');
+        $mpdf->Output('Custom Tour Invoice.pdf', 'I');
     }    /**
      * Remove the specified resource from storage.
      *

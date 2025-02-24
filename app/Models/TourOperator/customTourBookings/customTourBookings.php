@@ -2,6 +2,7 @@
 
 namespace App\Models\TourOperator\customTourBookings;
 
+use App\Models\Auth\User;
 use App\Models\BaseModel\BaseModel;
 use App\Models\tanzaniaRegions\tanzaniaRegions;
 use App\Models\TouristicAttractions\touristicAttractions;
@@ -25,6 +26,11 @@ class customTourBookings extends BaseModel
     protected $table='custom_tour_booking';
     protected $guarded=['uuid'];
     protected $dates=['deleted_at'];
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function region()
     {
         return $this->belongsTo(tanzaniaRegions::class,'tourist_region');
@@ -121,6 +127,7 @@ class customTourBookings extends BaseModel
         {
             $attractions[]=[
                 'attraction_name'=>$customTourBookingsTouristAttraction->attraction_name,
+                'uuid'=>$customTourBookingsTouristAttraction->uuid,
                 'id'=>$customTourBookingsTouristAttraction->id,
             ];
         }
@@ -212,19 +219,29 @@ class customTourBookings extends BaseModel
     }
     public function getTotalSafariPriceLabelAttribute()
     {
+        $customTourBookingTourPrice=customTourBookingTourPrices::query()->where('custom_tour_booking_id',$this->id)->first();
+        if(empty($customTourBookingTourPrice))
+        {
+            
+        }
+        else
+        {
         $totalResidentChildrenTravellers = $this->total_children_residents;
         $totalResidentAdultTravellers = $this->total_adult_residents;
         $totalForeignerAdultTravellers = $this->total_adult_foreigners;
         $totalForeignerChildrenTravellers = $this->total_children_foreigners;
 
-        $residentChildTourPrice=$this->resident_child_price;
-        $residentAdultTourPrice=$this->resident_adult_price;
-        $nonResidentChildTourPrice=$this->foreigner_child_price;
-        $nonResidentAdultTourPrice=$this->foreigner_adult_price;
+        $residentChildTourPrice=$customTourBookingTourPrice->resident_child_price;
+        $residentAdultTourPrice=$customTourBookingTourPrice->resident_adult_price;
+        $nonResidentChildTourPrice=$customTourBookingTourPrice->foreigner_child_price;
+        $nonResidentAdultTourPrice=$customTourBookingTourPrice->foreigner_adult_price;
 
         $GrandTotalTourPrice=($totalResidentChildrenTravellers *$residentChildTourPrice) + ($totalResidentAdultTravellers * $residentAdultTourPrice) + ($totalForeignerAdultTravellers * $nonResidentAdultTourPrice) + ($totalForeignerChildrenTravellers * $nonResidentChildTourPrice);
         return $GrandTotalTourPrice;
+        }
+        
     }
+
     public function getTotalReservationPriceLabelAttribute()
     {
         $customTourBookingReservation=customTourBookingReservations::query()->where('custom_tour_booking_id',$this->id)->first();
@@ -246,6 +263,16 @@ class customTourBookings extends BaseModel
             $grandTotalReservationPrice=($totalResidentChildrenTravellers * $residentChildReservationPrice) + ($totalResidentAdultTravellers * $residentAdultReservationPrice) + ($totalForeignerAdultTravellers * $foreignerAdultReservationPrice) + ($totalForeignerChildrenTravellers * $foreignerChildReservationPrice);
             return $grandTotalReservationPrice;
         }
+    }
+
+    public function getTotalCustomTourPriceLabelAttribute()
+    {
+        $customTourBooking=customTourBookings::query()->where('id',$this->id)->first();
+        $discountPercent=$customTourBooking->discount;
+        $tourPrice=$this->TotalSafariPriceLabel;
+        $reservationPrice=$this->TotalReservationPriceLabel;
+        $totalCustomTourPrice= $tourPrice + $reservationPrice - ($tourPrice + $reservationPrice) * ($discountPercent/100);
+        return $totalCustomTourPrice;
     }
 }
 

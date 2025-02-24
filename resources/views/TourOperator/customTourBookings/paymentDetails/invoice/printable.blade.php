@@ -90,6 +90,7 @@
             <?php
             $imageData = base64_encode(file_get_contents(base_path('public/public/TourOperatorsLogos/'.$customTourBooking->tourOperator->company_logo)));
             $dataUrl = 'data:image/png;base64,' . $imageData;
+            
             ?>
             <table style="width: 100%">
                 <tr>
@@ -97,13 +98,17 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="invoice-info">
-                                    <img src="<?php echo $dataUrl; ?>" style="width: 400px; height: 100px">
-                                    <h1>{{$customTourBooking->tourOperator->company_name}}</h1>
-                                    <p style="font-size: 15px">{{$customTourBooking->tourOperator->region}}</p>
-                                    <p style="font-size: 15px">{{$customTourBooking->tourOperator->postal_code}}</p>
-                                    <p style="font-size: 15px">{{$customTourBooking->tourOperator->phone_number}}</p>
-                                    <p style="font-size: 15px"><a href="{{$customTourBooking->tourOperator->website_url}}">{{$customTourBooking->tourOperator->website_url}}</a></p>
-                                    <p style="font-size: 15px"><a href="mailto:{{$customTourBooking->tourOperator->email_address}}">{{$customTourBooking->tourOperator->email_address}}</a></p>
+                                    <img src="<?php echo $dataUrl; ?>" style="width: 300px; height: auto">
+                                    <h1>{{$customTourBooking->tourOperator->company_name}},</h1>
+                                    <p>P.O BOX {{$customTourBooking->tourOperator->postal_code}},</p>
+                                    <p>{{$tanzaniaRegions[$customTourBooking->tourOperator->region]}},</p>
+                                    <p>{{$customTourBooking->tourOperator->physical_location}},</p>
+                                    <p>PHONE: {{$customTourBooking->tourOperator->phone_number}},</p>
+                                    <p><a href="{{$customTourBooking->tourOperator->website_url}}">{{$customTourBooking->tourOperator->website_url}},</a></p>
+                                    <p><a href="mailto:{{$customTourBooking->tourOperator->email_address}}">{{$customTourBooking->tourOperator->email_address}},</a></p>
+                                    <p>TIN NUMBER: {{$customTourBooking->tourOperator->tin_number}}.</p>
+
+                                   
                                 </div>
                             </div>
                         </div>
@@ -302,7 +307,7 @@
                     </p>
                 </div>
                 <br><br>
-                <p style="text-align: center;">"Thanks for using Xafari Explore. We are just being useful by thinking differently" <br> &copy;{{date('Y')}}</p>
+                <p style="text-align: center;">"Thanks for using XploSafariBook. We are just being useful by thinking differently" <br> &copy;{{date('Y')}}</p>
 
             </div>
         </div>

@@ -5,6 +5,7 @@ namespace App\Models\Auth;
 use App\Models\Auth\Attribute\UserAttribute;
 use App\Models\Auth\Relationship\UserRelationship;
 use App\Models\System\Relationship\GeneralDocumentRelationship;
+use App\Models\TourOperator\customTourBookings\customTourBookings;
 use App\Models\TourOperator\tourOperator;
 use App\Models\TourOperator\TourPackages\InternationalTourPackages\TourPackages;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackageBookings\localTourPackageBookings;
@@ -79,6 +80,11 @@ class User extends Authenticatable implements  AuditableContract
         return $this->belongsToMany(Role::class);
     }
 
+    public function customTourBookings()
+    {
+        return $this->hasMany(customTourBookings::class);
+    }
+    
     public function tourOperator()
     {
         return $this->hasMany(tourOperator::class);

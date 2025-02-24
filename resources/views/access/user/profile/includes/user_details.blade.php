@@ -97,17 +97,10 @@
             <div class="card shadow-lg mb-4">
                 <div class="card-body text-center">
                     <div class="position-relative d-inline-block mb-3">
-                        @if($user->profile_picture)
-                            <img src="{{ Storage::url($user->profile_picture) }}" 
-                                 class="rounded-circle img-fluid" 
-                                 style="width: 150px; height: 150px; object-fit: cover;" 
-                                 alt="{{ $user->username }}'s profile">
-                        @else
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
                                  style="width: 150px; height: 150px; font-size: 64px;">
                                 {{ strtoupper(substr($user->username, 0, 1)) }}
                             </div>
-                        @endif
                         <div class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2">
                             <i class="fas fa-check text-white" style="font-size: 16px;"></i>
                         </div>
@@ -143,7 +136,7 @@
         <div class="col-md-8">
             <div class="row">
                 <!-- Analytics Cards -->
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 mb-6" style="margin-top: 50px">
                     <a href="{{route('tourist.bookingsMadeByTourist')}}" style="text-decoration: none">
                         <div class="card shadow-sm h-100">
                             <div class="card-body">
@@ -152,7 +145,7 @@
                                         <i class="fas fa-calendar-alt" style="font-size:15px"></i>
                                     </div>
                                     <div>
-                                        <h5 class="card-title text-muted mb-0">Total Bookings</h5>
+                                        <h5 class="card-title text-muted mb-0">Local Tour Bookings</h5>
                                         <p class="display-6 fw-bold mb-0" style="text-align: center">
                                             {{$user->getTotalBookingsMadeByTourist()?? 0 }}
                                         </p>
@@ -163,8 +156,29 @@
                     </a>
                     
                 </div>
+
+                <div class="col-md-6 mb-6" style="margin-top: 50px">
+                    <a href="{{route('tourist.customTourBookings')}}" style="text-decoration: none">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle p-3 me-3">
+                                        <i class="fas fa-calendar-alt" style="font-size:15px"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="card-title text-muted mb-0">Custom Tour Bookings</h5>
+                                        <p class="display-6 fw-bold mb-0" style="text-align: center">
+                                            {{$user->getTotalCustomTourBookingsMadeByTourist()?? 0 }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                </div>
                 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 mb-6" style="margin-top: 50px">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -182,7 +196,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 mb-6" style="margin-top: 50px">
                     <a href="{{route('tourist.destinationTravelledbyUser')}}" style="text-decoration: none">
                         <div class="card shadow-sm h-100">
                             <div class="card-body">

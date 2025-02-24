@@ -295,6 +295,7 @@
                                 <div class="col-md-12">
                                     <p>By clicking the 'Send request' button you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a></p>
                                     <input name="tour_operator_id" value="{{$tourOperator->id}}" hidden>
+                                    <input name="user_id" value="{{$customTourBooking->user_id}}" hidden>
                                 </div>
                             </div>
                             <br>

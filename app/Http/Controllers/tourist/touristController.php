@@ -5,6 +5,7 @@ namespace App\Http\Controllers\tourist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\TouristicAttractions\touristicAttractions;
+use App\Models\TourOperator\customTourBookings\customTourBookings;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackageBookings\localTourPackageBookings;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\LocalTourPackageBookings\localTripCancellation\localTourPackageCancelledbookings;
 use App\Models\TourOperator\TourPackages\LocalTourPackages\localTourPackages;
@@ -59,5 +60,10 @@ class touristController extends Controller
         return view('Tourist.destinationTravelled.list')
         ->with('allDestinationsTravelled',$allDestinationsTravelled)
         ->with('recentDestinationsTravelled',$recentDestinationsTravelled);
+    }
+    public function customTourBookings()
+    {
+        $customTourBookings=customTourBookings::query()->paginate(10);
+        return view('Tourist.CustomTourBookings.list')->with('customTourBookings',$customTourBookings);
     }
 }

@@ -11,6 +11,7 @@ Route::group([
         Route::get('/userManual', 'touristController@userManual')->name('userManual');
         Route::get('/bookingsMadeByTourist', 'touristController@bookingsMadeByTourist')->name('bookingsMadeByTourist');
         Route::get('/destinationTravelledbyUser', 'touristController@destinationTravelledbyUser')->name('destinationTravelledbyUser');
+        Route::get('/customTourBookings', 'touristController@customTourBookings')->name('customTourBookings');
     });
 
 
